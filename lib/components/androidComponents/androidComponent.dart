@@ -33,8 +33,9 @@ TextField AndroidSecuredField(String hint, TextEditingController controller,
   );
 }
 
-ElevatedButton AndroidButton(Widget widget, Function doSomething) {
+ElevatedButton AndroidButton(Widget widget, Function doSomething, Color color) {
   return ElevatedButton(
+    style: ButtonStyle(backgroundColor: MaterialStateProperty.all(color)),
     onPressed: () {
       doSomething();
     },
