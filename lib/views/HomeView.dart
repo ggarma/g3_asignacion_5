@@ -76,43 +76,49 @@ class _HomeViewState extends State<HomeView> {
                     ],
                   ),
                 ),
-                Container(
-                  width: 80,
-                  margin: EdgeInsets.only(right: 5),
-                  child: Column(
-                    children: [
-                      Text(
-                        '20',
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
+                GestureDetector(
+                  onTap: () {},
+                  child: Container(
+                    width: 80,
+                    margin: EdgeInsets.only(right: 5),
+                    child: Column(
+                      children: [
+                        Text(
+                          '20',
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                      Text(
-                        'Seguidores',
-                        style: TextStyle(fontSize: 17),
-                        overflow: TextOverflow.ellipsis,
-                      )
-                    ],
+                        Text(
+                          'Seguidores',
+                          style: TextStyle(fontSize: 17),
+                          overflow: TextOverflow.ellipsis,
+                        )
+                      ],
+                    ),
                   ),
                 ),
-                Container(
-                  width: 78,
-                  child: Column(
-                    children: [
-                      Text(
-                        '20',
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
+                GestureDetector(
+                  onTap: () {},
+                  child: Container(
+                    width: 78,
+                    child: Column(
+                      children: [
+                        Text(
+                          '20',
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                      Text(
-                        'Seguidos',
-                        style: TextStyle(fontSize: 17),
-                        overflow: TextOverflow.ellipsis,
-                      )
-                    ],
+                        Text(
+                          'Seguidos',
+                          style: TextStyle(fontSize: 17),
+                          overflow: TextOverflow.ellipsis,
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ],
