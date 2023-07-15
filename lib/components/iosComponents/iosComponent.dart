@@ -34,6 +34,7 @@ CupertinoTextField IOSSecuredField(String hint,
 CupertinoButton IOSButton(Widget widget, Function doSomething, Color color) {
   return CupertinoButton(
       color: color,
+      padding: EdgeInsets.all(5),
       child: widget,
       onPressed: () {
         doSomething();
