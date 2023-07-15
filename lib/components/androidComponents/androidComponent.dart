@@ -32,3 +32,12 @@ TextField AndroidSecuredField(String hint, TextEditingController controller,
     ),
   );
 }
+
+ElevatedButton AndroidButton(Widget widget, Function doSomething) {
+  return ElevatedButton(
+    onPressed: () {
+      doSomething();
+    },
+    child: widget,
+  );
+}

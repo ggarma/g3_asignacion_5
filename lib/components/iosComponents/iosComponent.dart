@@ -30,3 +30,12 @@ CupertinoTextField IOSSecuredField(String hint,
     ),
   );
 }
+
+CupertinoButton IOSButton(Widget widget, Function doSomething, Color color) {
+  return CupertinoButton(
+      color: color,
+      child: widget,
+      onPressed: () {
+        doSomething();
+      });
+}
