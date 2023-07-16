@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:g3_asignacion_5/splash_screen/SplashScreen.dart';
+import 'package:g3_asignacion_5/views/FollowView.dart';
 import 'package:g3_asignacion_5/views/HomeView.dart';
 import 'package:g3_asignacion_5/views/Login.dart';
 
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
         '/': (context) => SplashScreen(),
         '/login': (context) => LoginView(),
         '/home': (context) => HomeView(),
+        '/follows': (context) => FollowView(),
       },
     );
   }

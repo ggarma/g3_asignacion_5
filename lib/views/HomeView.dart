@@ -15,16 +15,14 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  late List<dynamic> followings = [];
-  late List<dynamic> followers = [];
-
   Future<dynamic> getData() async {
     var user = await getUser('1');
     List<dynamic> posts = await getUserPosts('1');
-    followings = await getUserFollowings('1');
-    followers = await getUserFollowers('1');
+    List<dynamic> followings = await getUserFollowings('1');
+    List<dynamic> followers = await getUserFollowers('1');
 
     var response = {
+      'id': user['id'],
       'name': user['name'],
       'image_url': user['image_url'],
       'followers': followers.length,
@@ -112,7 +110,13 @@ class _HomeViewState extends State<HomeView> {
                             ),
                           ),
                           GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.pushNamed(context, '/follows',
+                                  arguments: {
+                                    'id': snapshot.data['id'],
+                                    'index': 0,
+                                  });
+                            },
                             child: Container(
                               width: 80,
                               margin: EdgeInsets.only(right: 5),
@@ -135,7 +139,13 @@ class _HomeViewState extends State<HomeView> {
                             ),
                           ),
                           GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.pushNamed(context, '/follows',
+                                  arguments: {
+                                    'id': snapshot.data['id'],
+                                    'index': 1,
+                                  });
+                            },
                             child: Container(
                               width: 78,
                               child: Column(
