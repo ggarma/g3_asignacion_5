@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:g3_asignacion_5/api/Services.dart';
 import 'package:g3_asignacion_5/components/androidComponents/androidComponent.dart';
 import 'package:g3_asignacion_5/components/iosComponents/iosComponent.dart';
@@ -16,10 +15,13 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   Future<dynamic> getData() async {
-    var user = await getUser('1');
-    List<dynamic> posts = await getUserPosts('1');
-    List<dynamic> followings = await getUserFollowings('1');
-    List<dynamic> followers = await getUserFollowers('1');
+    final Map<String, dynamic>? arguments =
+        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
+
+    var user = await getUser(arguments?['id']);
+    List<dynamic> posts = await getUserPosts(arguments?['id']);
+    List<dynamic> followings = await getUserFollowings(arguments?['id']);
+    List<dynamic> followers = await getUserFollowers(arguments?['id']);
 
     var response = {
       'id': user['id'],
