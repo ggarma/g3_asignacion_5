@@ -25,25 +25,24 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children:  [
-              SizedBox(
-                width: 132,
-                height: 132,
-                child: Image.asset(
-                  'assets/icon.png',
-                  fit: BoxFit.fill,
-                  color: Colors.orange
+          children: [
+            SizedBox(
+              width: 132,
+              height: 132,
+              child: Image.asset('assets/icon.png',
+                  fit: BoxFit.fill, color: Colors.orange),
+            ),
+            SizedBox(
+              width: 132,
+              height: 52,
+              child: Center(
+                child: Text(
+                  'ULGRAM',
+                  style: TextStyle(color: Colors.white, fontSize: 16.0),
                 ),
-                
               ),
-              SizedBox(
-                width: 132,
-                height: 52,
-                child: Center(
-                    child: Text('ULGRAM',
-                      style: TextStyle(color: Colors.white,fontSize:16.0),
-                 ),),)
-         ],
+            )
+          ],
         ),
       ),
     );
