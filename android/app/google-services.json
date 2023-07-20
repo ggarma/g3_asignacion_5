@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "745309094862",
+    "project_id": "programovil-5ca0d",
+    "storage_bucket": "programovil-5ca0d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:745309094862:android:17cbb679df827e6b43e19f",
+        "android_client_info": {
+          "package_name": "com.example.g3_asignacion_5"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "745309094862-rjiprlc2gbei711h7h999d0dkscd76b2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDfwmILNmSlL-clnrZ3HzaD0k51qaoSX5s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "745309094862-rjiprlc2gbei711h7h999d0dkscd76b2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

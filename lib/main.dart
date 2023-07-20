@@ -1,10 +1,17 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:g3_asignacion_5/splash_screen/SplashScreen.dart';
 import 'package:g3_asignacion_5/views/FollowView.dart';
 import 'package:g3_asignacion_5/views/HomeView.dart';
 import 'package:g3_asignacion_5/views/Login.dart';
 
-void main() {
+import 'firebase_options.dart';
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(MyApp());
 }
 
