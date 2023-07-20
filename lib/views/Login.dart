@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:g3_asignacion_5/components/androidComponents/androidComponent.dart';
 import 'package:g3_asignacion_5/components/iosComponents/iosComponent.dart';
 
+//stf tab (autocompletado del statefulwidget)
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
 
@@ -11,6 +12,8 @@ class LoginView extends StatefulWidget {
   State<LoginView> createState() => _LoginViewState();
 }
 
+
+//------------------------------------------------------------------------
 class _LoginViewState extends State<LoginView> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -44,6 +47,7 @@ class _LoginViewState extends State<LoginView> {
                 child: Image.asset(
                   'assets/icon.png',
                   fit: BoxFit.fill,
+                  color: Colors.orange
                 ),
               ),
               SizedBox(
@@ -69,7 +73,52 @@ class _LoginViewState extends State<LoginView> {
                   ? AndroidSecuredField(
                       'password', _passwordController, onTap, obscure)
                   : IOSSecuredField(
-                      'password', _passwordController, onTap, obscure)
+                      'password', _passwordController, onTap, obscure),
+              SizedBox(
+                height:40,
+                width:132,
+              ),
+              
+              Platform.isAndroid
+                  ? SizedBox(
+                      width:333,
+                      child:AndroidButton(Text("Iniciar sesión"), () {}, Color.fromARGB(255, 255, 140, 0),Color.fromARGB(255, 0, 0, 0))
+                      )
+                  :SizedBox(
+                      width:333, 
+                      child:IOSButton(Text("Iniciar sesión"), () {},  Color.fromARGB(255, 255, 140, 0),),
+                  ),
+              
+              Platform.isAndroid
+                  ? SizedBox(
+                      width:333, 
+                      child:AndroidButton(Text("Ingresar con Google"), () {}, Color.fromARGB(255, 1, 150, 43), const Color.fromARGB(255, 255, 255, 255)),
+                    )
+                  : SizedBox(
+                      width:333, 
+                      child:IOSButton(Text("Ingresar con Google"), () {}, Color.fromARGB(255, 1, 150, 43)),
+                  ),
+
+              Platform.isAndroid
+                  ? SizedBox(
+                      width:333, 
+                      child:AndroidButton(Text("Crear cuenta"), () {}, Color.fromARGB(255, 198, 198, 198),Color.fromARGB(255, 0, 0, 0)),
+                    )
+                  : SizedBox(
+                      width:333, 
+                      child:IOSButton(Text("Crear cuenta"), () {}, Color.fromARGB(255, 198, 198, 198)),
+                  ),
+
+              Platform.isAndroid
+                  ? SizedBox(
+                      width:333, 
+                      child:AndroidButton(Text("Recuperar contraseña"), () {}, Color.fromARGB(255, 198, 198, 198), Color.fromARGB(255, 0, 0, 0)),
+                    )
+                  : SizedBox(
+                      width:333, 
+                      child:IOSButton(Text("Recuperar contraseña"), () {}, Color.fromARGB(255, 198, 198, 198)),
+                  ),
+
             ],
           ),
         ),

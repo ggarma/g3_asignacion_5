@@ -191,7 +191,7 @@ class _HomeViewState extends State<HomeView> {
                                       overflow: TextOverflow.ellipsis,
                                     ),
                                     () {},
-                                    Color(0xFFFF7F2A))
+                                    Color(0xFFFF7F2A),Color.fromARGB(255, 0, 0, 0))
                                 : IOSButton(
                                     Text(
                                       'Editar Perfil',
@@ -215,7 +215,7 @@ class _HomeViewState extends State<HomeView> {
                                       overflow: TextOverflow.ellipsis,
                                     ),
                                     () {},
-                                    Color(0xFFFF7F2A))
+                                    Color(0xFFFF7F2A),Color.fromARGB(255, 0, 0, 0))
                                 : IOSButton(
                                     Text(
                                       'Compartir Perfil',
@@ -233,10 +233,10 @@ class _HomeViewState extends State<HomeView> {
                                 ? AndroidButton(
                                     Icon(
                                       Icons.person_add,
-                                      color: Colors.white,
+                                      color: Colors.black,
                                     ),
                                     () {},
-                                    Color(0xFFFF7F2A))
+                                    Color(0xFFFF7F2A),Color.fromARGB(255, 0, 0, 0))
                                 : IOSButton(
                                     Icon(
                                       CupertinoIcons.person_add_solid,

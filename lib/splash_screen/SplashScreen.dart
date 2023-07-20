@@ -14,7 +14,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Timer(Duration(seconds: 5), () {
-      Navigator.pushReplacementNamed(context, '/home');
+      Navigator.pushReplacementNamed(context, '/login');
     });
   }
 
@@ -25,20 +25,25 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Container(
-              width: 96,
-              height: 96,
-              child: Image.asset(
-                'assets/icon.png',
-                fit: BoxFit.fill,
+          children:  [
+              SizedBox(
+                width: 132,
+                height: 132,
+                child: Image.asset(
+                  'assets/icon.png',
+                  fit: BoxFit.fill,
+                  color: Colors.orange
+                ),
+                
               ),
-            ),
-            Text(
-              'ULGRAM',
-              style: TextStyle(color: Colors.white),
-            )
-          ],
+              SizedBox(
+                width: 132,
+                height: 52,
+                child: Center(
+                    child: Text('ULGRAM',
+                      style: TextStyle(color: Colors.white,fontSize:16.0),
+                 ),),)
+         ],
         ),
       ),
     );

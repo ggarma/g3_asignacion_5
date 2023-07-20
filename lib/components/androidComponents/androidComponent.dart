@@ -33,12 +33,15 @@ TextField AndroidSecuredField(String hint, TextEditingController controller,
   );
 }
 
-ElevatedButton AndroidButton(Widget widget, Function doSomething, Color color) {
+ElevatedButton AndroidButton(Widget widget, Function doSomething, Color color, Color colorTexto) {
   return ElevatedButton(
-    style: ButtonStyle(backgroundColor: MaterialStateProperty.all(color)),
-    onPressed: () {
+    style: ButtonStyle(
+      backgroundColor: MaterialStateProperty.all(color),
+      textStyle: MaterialStateProperty.all(TextStyle(color:colorTexto,fontSize:14)),
+      ),
+      onPressed: () {
       doSomething();
     },
-    child: widget,
+    child: widget
   );
 }
