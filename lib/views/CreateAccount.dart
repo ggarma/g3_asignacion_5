@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:g3_asignacion_5/components/androidComponents/androidComponent.dart';
 import 'package:g3_asignacion_5/components/iosComponents/iosComponent.dart';
 
@@ -26,6 +27,42 @@ class _CreateAccountViewState extends State<CreateAccountView> {
 
   void navigateToResetPassword(){
     Navigator.pushNamed(context, '/resetPassword');
+  }
+
+  void showErrorMessage(String message){
+    showDialog(
+      context:context,
+      builder: (context){
+        return AlertDialog(
+          backgroundColor: Color.fromARGB(255, 255, 133, 124),
+          title: Center(
+            child: Text(
+              message,
+              style: const TextStyle(color:Colors.black)),)
+        );
+      } );
+  }
+
+  void signUserIn() async{
+    try{
+
+      if(_passwordController.text != _repeatPasswordController.text){
+        showErrorMessage("Las contraseñas no coinciden");
+      }
+      UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: _emailController.text, 
+        password: _passwordController.text
+        );
+
+        String uid = userCredential.user!.uid;
+        print("Logged in");
+        Navigator.pushReplacementNamed(context, '/home',arguments:{'id':uid});
+      
+    }on FirebaseAuthException catch (e) {
+      Navigator.pop(context);
+      showErrorMessage(e.code);
+    }
+
   }
 
   void onTap() {

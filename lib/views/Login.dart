@@ -20,6 +20,21 @@ class _LoginViewState extends State<LoginView> {
   final TextEditingController _passwordController = TextEditingController();
   bool obscure = true;
 
+  void showErrorMessage(String message){
+    showDialog(
+      context:context,
+      builder: (context){
+        return AlertDialog(
+          backgroundColor: Color.fromARGB(255, 255, 133, 124),
+          title: Center(
+            child: Text(
+              message,
+              style: const TextStyle(color:Colors.black)),)
+        );
+      } );
+  }
+
+
   void navigateToCreateAccount(){
     Navigator.pushNamed(context, '/createAccount');
   }
@@ -40,17 +55,19 @@ class _LoginViewState extends State<LoginView> {
 
 
   void signUserIn() async{
-    UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-      email: _emailController.text, 
-      password: _passwordController.text
-      );
-      
-      if (userCredential.user != null) {
+    try{
+      UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: _emailController.text, 
+        password: _passwordController.text
+        );
+
         String uid = userCredential.user!.uid;
         print("Logged in");
         Navigator.pushReplacementNamed(context, '/home',arguments:{'id':uid});
-    } else {
-      print('No se pudo obtener el usuario después de iniciar sesión.');
+      
+    }on FirebaseAuthException catch (e) {
+      Navigator.pop(context);
+      showErrorMessage(e.code);
     }
 
   }
