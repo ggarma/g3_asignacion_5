@@ -4,6 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:g3_asignacion_5/components/androidComponents/androidComponent.dart';
 import 'package:g3_asignacion_5/components/iosComponents/iosComponent.dart';
 
+//FirebaseAuth.instance
+
 //stf tab (autocompletado del statefulwidget)
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -20,7 +22,15 @@ class _LoginViewState extends State<LoginView> {
   bool obscure = true;
 
   void onTap() {
+    //FirebaseAuth.instance. [autocompletado]
     setState(() {
+      //luego del .then es para que se ejecute luego
+      // .then((value) async {
+      //                 id = value.user!.uid;
+      //                 print("Logged In");
+      //                 Navigator.pushReplacementName(
+      //                     );
+      //               });
       obscure = !obscure;
     });
   }
@@ -82,7 +92,7 @@ class _LoginViewState extends State<LoginView> {
               Platform.isAndroid
                   ? SizedBox(
                       width:333,
-                      child:AndroidButton(Text("Iniciar sesión"), () {}, Color.fromARGB(255, 255, 140, 0),Color.fromARGB(255, 0, 0, 0))
+                      child:AndroidButton(Text("Iniciar sesión"), (){}, Color.fromARGB(255, 255, 140, 0),Color.fromARGB(255, 0, 0, 0))
                       )
                   :SizedBox(
                       width:333, 
