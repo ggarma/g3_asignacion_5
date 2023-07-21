@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:g3_asignacion_5/api/Services.dart';
 import 'package:g3_asignacion_5/components/androidComponents/androidComponent.dart';
 import 'package:g3_asignacion_5/components/iosComponents/iosComponent.dart';
@@ -14,14 +15,26 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+
+  Future<void> signOut() async {
+  try {
+    await FirebaseAuth.instance.signOut();
+    Navigator.pushReplacementNamed(context, '/login');
+  } catch (e) {
+    print('Error al cerrar sesión: $e');
+    // Aquí puedes manejar el error si ocurre algún problema al cerrar sesión.
+    }
+  }
+
   Future<dynamic> getData() async {
     final Map<String, dynamic>? arguments =
         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
 
     var user = await getUser(arguments?['id']);
-    List<dynamic> posts = await getUserPosts(arguments?['id']);
-    List<dynamic> followings = await getUserFollowings(arguments?['id']);
-    List<dynamic> followers = await getUserFollowers(arguments?['id']);
+
+    List<dynamic> posts = await getUserPosts(user['id'].toString());
+    List<dynamic> followings = await getUserFollowings(user['id'].toString());
+    List<dynamic> followers = await getUserFollowers(user['id'].toString());
 
     var response = {
       'id': user['id'],
@@ -32,7 +45,7 @@ class _HomeViewState extends State<HomeView> {
       'posts': posts
           .map(
             (e) => Container(
-              height: 140,
+              height: 100,
               width: 100,
               child: Image.network(
                 e['image_url'],
@@ -74,7 +87,9 @@ class _HomeViewState extends State<HomeView> {
                         children: [
                           Column(
                             children: [
+
                               Container(
+                                margin: EdgeInsets.only(top: 20, right: 10),
                                 height: 100,
                                 width: 100,
                                 decoration: BoxDecoration(
@@ -92,8 +107,8 @@ class _HomeViewState extends State<HomeView> {
                             ],
                           ),
                           Container(
-                            width: 80,
-                            margin: EdgeInsets.only(left: 10, right: 5),
+                            width: 60,
+                            margin: EdgeInsets.only(left: 5, right: 3),
                             child: Column(
                               children: [
                                 Text(
@@ -120,7 +135,7 @@ class _HomeViewState extends State<HomeView> {
                                   });
                             },
                             child: Container(
-                              width: 80,
+                              width: 60,
                               margin: EdgeInsets.only(right: 5),
                               child: Column(
                                 children: [
@@ -149,7 +164,7 @@ class _HomeViewState extends State<HomeView> {
                                   });
                             },
                             child: Container(
-                              width: 78,
+                              width: 60,
                               child: Column(
                                 children: [
                                   Text(
@@ -170,10 +185,21 @@ class _HomeViewState extends State<HomeView> {
                           ),
                         ],
                       ),
-                      Text(
-                        snapshot.data['name'],
-                        style: TextStyle(overflow: TextOverflow.visible),
-                      ),
+                      Padding(
+                              padding: EdgeInsets.only(left: 30, right: 30,top: 10), // Ajusta el valor según tu preferencia
+                              child: Text(
+                                snapshot.data['name'],
+                                style: TextStyle(
+                                  fontSize:17,
+                                  fontWeight: FontWeight.bold,
+                                  overflow: TextOverflow.visible,
+                                ),
+                              ),
+                            ),
+                      // Text(
+                      //   snapshot.data['name'],
+                      //   style: TextStyle(overflow: TextOverflow.visible),
+                      // ),
                       SizedBox(
                         height: 20,
                       ),
@@ -189,7 +215,7 @@ class _HomeViewState extends State<HomeView> {
                                     Text(
                                       'Editar Perfil',
                                       style: TextStyle(
-                                          fontSize: 17, color: Colors.white),
+                                          fontSize: 16, color: Colors.white),
                                       overflow: TextOverflow.ellipsis,
                                     ),
                                     () {},
@@ -199,7 +225,7 @@ class _HomeViewState extends State<HomeView> {
                                     Text(
                                       'Editar Perfil',
                                       style: TextStyle(
-                                          fontSize: 17, color: Colors.white),
+                                          fontSize: 16, color: Colors.white),
                                       overflow: TextOverflow.ellipsis,
                                     ),
                                     () {},
@@ -259,13 +285,30 @@ class _HomeViewState extends State<HomeView> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            "Historias destacadas",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
+                           Padding(
+                              padding: EdgeInsets.only(left: 30, right: 30), // Ajusta el valor según tu preferencia
+                              child: Text(
+                                "Historias destacadas",
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                             ),
-                          ),
-                          Text("Guarda tus historias favoritas en el perfil"),
+                          // Text(
+                          //   "Historias destacadas",
+                          //   style: TextStyle(
+                          //     fontWeight: FontWeight.bold,
+                          //   ),
+                          // ),
+                          Padding(
+                              padding: EdgeInsets.only(left: 30, right: 30), // Ajusta el valor según tu preferencia
+                              child: Text(
+                                "Guarda tus historias favoritas en el perfil",
+                                style: TextStyle(
+                                  fontSize: 14
+                              ),
+                            )),
                           Column(children: [
                             IconButton(
                               iconSize: 100,
@@ -288,11 +331,30 @@ class _HomeViewState extends State<HomeView> {
                             ),
                             shrinkWrap: true,
                             children: snapshot.data['posts'],
-                          )
+                          ),
+                        
+                          Platform.isAndroid
+                          ? SizedBox(
+                              width: 333,
+                              child: AndroidButton(
+                                  Text("CERRAR SESIÓN"),
+                                  (){signOut();},
+                                  Color.fromARGB(255, 255, 0, 0),
+                                  Color.fromARGB(255, 0, 0, 0)),
+                            )
+                          : Container(
+                              width: 333,
+                              margin: EdgeInsets.only(bottom: 10),
+                              child: IOSButton(Text("CERRAR SESIÓN"), 
+                              (){signOut();},
+                                  Color.fromARGB(255, 255, 0, 0)),
+                            ),
                         ],
                       ),
                     ],
                   )),
+                
+
                 );
               }
             }));

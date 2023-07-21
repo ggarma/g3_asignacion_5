@@ -1,73 +1,31 @@
 import 'dart:io';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:g3_asignacion_5/components/androidComponents/androidComponent.dart';
 import 'package:g3_asignacion_5/components/iosComponents/iosComponent.dart';
 
+// FirebaseAuth auth = FirebaseAuth.getInstance();
+// auth.sendPasswordResetEmail(emailAddress)
+
 //FirebaseAuth.instance
 
 //stf tab (autocompletado del statefulwidget)
-class LoginView extends StatefulWidget {
-  const LoginView({super.key});
+class ResetPasswordView extends StatefulWidget {
+  const ResetPasswordView({super.key});
 
   @override
-  State<LoginView> createState() => _LoginViewState();
+  State<ResetPasswordView> createState() => _ResetPasswordViewState();
 }
 
 //------------------------------------------------------------------------
-class _LoginViewState extends State<LoginView> {
+class _ResetPasswordViewState extends State<ResetPasswordView> {
   final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  bool obscure = true;
 
   void navigateToCreateAccount(){
     Navigator.pushNamed(context, '/createAccount');
   }
 
-  void navigateToResetPassword(){
-    Navigator.pushNamed(context, '/resetPassword');
-  }
-
-  //Método de Inicio de Sesión
-  // void signUserIn() async{
-  //   await FirebaseAuth.instance.signInWithEmailAndPassword(
-  //     email: _emailController.text, 
-  //     password: _passwordController.text)
-  //     .then((value) async {
-
-  //     });
-  // }
-
-
-  void signUserIn() async{
-    UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-      email: _emailController.text, 
-      password: _passwordController.text
-      );
-      
-      if (userCredential.user != null) {
-        String uid = userCredential.user!.uid;
-        print("Logged in");
-        Navigator.pushReplacementNamed(context, '/home',arguments:{'id':uid});
-    } else {
-      print('No se pudo obtener el usuario después de iniciar sesión.');
-    }
-
-  }
-
-  
-  void onTap() {
-    //FirebaseAuth.instance. [autocompletado]
-    setState(() {
-      //luego del .then es para que se ejecute luego
-      // .then((value) async {
-      //                 id = value.user!.uid;
-      //                 print("Logged In");
-      //                 Navigator.pushReplacementName(
-      //                     );
-      //               });
-      obscure = !obscure;
-    });
+  void navigateToLogin(){
+    Navigator.pushNamed(context, '/login');
   }
 
   @override
@@ -96,7 +54,7 @@ class _LoginViewState extends State<LoginView> {
                 height: 10,
               ),
               Text(
-                "Acceder al sistema",
+                "Recuperar contraseña",
                 style: TextStyle(
                   fontSize: 20,
                 ),
@@ -106,16 +64,9 @@ class _LoginViewState extends State<LoginView> {
                 height: 30,
               ),
               Platform.isAndroid
-                  ? AndroidTextField('Correo', _emailController)
-                  : IOSTextField('Correo', _emailController),
-              SizedBox(
-                height: 10,
-              ),
-              Platform.isAndroid
-                  ? AndroidSecuredField(
-                      'Contraseña', _passwordController, onTap, obscure)
-                  : IOSSecuredField(
-                      'Contraseña', _passwordController, onTap, obscure),
+                  ? AndroidTextField('Nombre de usuario', _emailController)
+                  : IOSTextField('Nombre de usuario', _emailController),
+              
               SizedBox(
                 height: 40,
                 width: 132,
@@ -124,34 +75,21 @@ class _LoginViewState extends State<LoginView> {
                   ? SizedBox(
                       width: 333,
                       child: AndroidButton(
-                          Text("Iniciar sesión"),
-                          (){signUserIn();},
+                          Text("Recuperar contraseña"),
+                          (){},
                           Color.fromARGB(255, 255, 140, 0),
                           Color.fromARGB(255, 0, 0, 0)))
                   : Container(
                       width: 333,
                       margin: EdgeInsets.only(bottom: 10),
                       child: IOSButton(
-                        Text("Iniciar sesión"),
-                        () {signUserIn();},
+                        Text("Recuperar contraseña"),
+                        () {},
                         Color.fromARGB(255, 255, 140, 0),
                       ),
                     ),
-              Platform.isAndroid
-                  ? SizedBox(
-                      width: 333,
-                      child: AndroidButton(
-                          Text("Ingresar con Google"),
-                          () {},
-                          Color.fromARGB(255, 1, 150, 43),
-                          const Color.fromARGB(255, 255, 255, 255)),
-                    )
-                  : Container(
-                      width: 333,
-                      margin: EdgeInsets.only(bottom: 10),
-                      child: IOSButton(Text("Ingresar con Google"), () {},
-                          Color.fromARGB(255, 1, 150, 43)),
-                    ),
+              
+              
               Platform.isAndroid
                   ? SizedBox(
                       width: 333,
@@ -171,25 +109,24 @@ class _LoginViewState extends State<LoginView> {
                   ? SizedBox(
                       width: 333,
                       child: AndroidButton(
-                          Text("Recuperar contraseña"),
-                          (){navigateToResetPassword();},
+                          Text("Ingresar al sistema"),
+                          () {navigateToLogin();},
                           Color.fromARGB(255, 198, 198, 198),
                           Color.fromARGB(255, 0, 0, 0)),
                     )
                   : Container(
                       width: 333,
                       margin: EdgeInsets.only(bottom: 10),
-                      child: IOSButton(Text("Recuperar contraseña"), 
-                      (){navigateToResetPassword();},
+                      child: IOSButton(
+                          Text("Ingresar al sistema"),
+                          () {navigateToLogin();},
                           Color.fromARGB(255, 198, 198, 198)),
                     ),
+
             ],
           ),
-          
         ),
-        
       ),
-
     );
   }
 }
