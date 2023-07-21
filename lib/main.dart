@@ -13,6 +13,7 @@ import 'firebase_options.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
+    name: 'g5_asignacion_5',
     options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(MyApp());
@@ -38,7 +39,7 @@ class MyApp extends StatelessWidget {
       themeMode: ThemeMode.system,
       routes: {
         '/': (context) => SplashScreen(),
-        '/authPage':(context) => AuthPage(),
+        '/authPage': (context) => AuthPage(),
         '/login': (context) => LoginView(),
         '/resetPassword': (context) => ResetPasswordView(),
         '/createAccount': (context) => CreateAccountView(),

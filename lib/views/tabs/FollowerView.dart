@@ -61,7 +61,10 @@ class _FollowerViewState extends State<FollowerView> {
                   ),
                 ]),
               ]),
-              onTap: () {},
+              onTap: () {
+                Navigator.pushNamed(context, '/home',
+                    arguments: {'id': item['id']});
+              },
             ),
             Divider(
               thickness: 1,

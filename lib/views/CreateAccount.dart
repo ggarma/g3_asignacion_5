@@ -17,20 +17,28 @@ class CreateAccountView extends StatefulWidget {
 class _CreateAccountViewState extends State<CreateAccountView> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _repeatPasswordController = TextEditingController();
+  final TextEditingController _repeatPasswordController =
+      TextEditingController();
   bool obscure = true;
+  bool obscure2 = true;
 
-  void navigateToLogin(){
+  void navigateToLogin() {
     Navigator.pushNamed(context, '/login');
   }
 
-  void navigateToResetPassword(){
+  void navigateToResetPassword() {
     Navigator.pushNamed(context, '/resetPassword');
   }
 
   void onTap() {
     setState(() {
       obscure = !obscure;
+    });
+  }
+
+  void onTap2() {
+    setState(() {
+      obscure2 = !obscure2;
     });
   }
 
@@ -83,21 +91,21 @@ class _CreateAccountViewState extends State<CreateAccountView> {
               ),
               //--------------------------------------------------------------
               Platform.isAndroid
-                  ? AndroidSecuredField(
-                      'Repetir contraseña', _repeatPasswordController, onTap, obscure)
-                  : IOSSecuredField(
-                      'Repetir contraseña', _repeatPasswordController, onTap, obscure),
+                  ? AndroidSecuredField('Repetir contraseña',
+                      _repeatPasswordController, onTap2, obscure)
+                  : IOSSecuredField('Repetir contraseña',
+                      _repeatPasswordController, onTap2, obscure),
               SizedBox(
                 height: 10,
                 width: 132,
               ),
-               //--------------------------------------------------------------
+              //--------------------------------------------------------------
               Platform.isAndroid
                   ? SizedBox(
                       width: 333,
                       child: AndroidButton(
                           Text("Crear cuenta"),
-                          (){},
+                          () {},
                           Color.fromARGB(255, 255, 140, 0),
                           Color.fromARGB(255, 0, 0, 0)))
                   : Container(
@@ -109,38 +117,36 @@ class _CreateAccountViewState extends State<CreateAccountView> {
                         Color.fromARGB(255, 255, 140, 0),
                       ),
                     ),
-              
+
               Platform.isAndroid
                   ? SizedBox(
                       width: 333,
-                      child: AndroidButton(
-                          Text("Ingresar al Sistema"),
-                          () {navigateToLogin();},
-                          Color.fromARGB(255, 198, 198, 198),
+                      child: AndroidButton(Text("Ingresar al Sistema"), () {
+                        navigateToLogin();
+                      }, Color.fromARGB(255, 198, 198, 198),
                           Color.fromARGB(255, 0, 0, 0)),
                     )
                   : Container(
                       width: 333,
                       margin: EdgeInsets.only(bottom: 10),
-                      child: IOSButton(Text("Ingresar al Sistema"), 
-                      () {navigateToLogin();},
-                          Color.fromARGB(255, 198, 198, 198)),
+                      child: IOSButton(Text("Ingresar al Sistema"), () {
+                        navigateToLogin();
+                      }, Color.fromARGB(255, 198, 198, 198)),
                     ),
               Platform.isAndroid
                   ? SizedBox(
                       width: 333,
-                      child: AndroidButton(
-                          Text("Recuperar contraseña"),
-                          () {navigateToResetPassword();},
-                          Color.fromARGB(255, 198, 198, 198),
+                      child: AndroidButton(Text("Recuperar contraseña"), () {
+                        navigateToResetPassword();
+                      }, Color.fromARGB(255, 198, 198, 198),
                           Color.fromARGB(255, 0, 0, 0)),
                     )
                   : Container(
                       width: 333,
                       margin: EdgeInsets.only(bottom: 10),
-                      child: IOSButton(Text("Recuperar contraseña"), 
-                      () {navigateToResetPassword();},
-                          Color.fromARGB(255, 198, 198, 198)),
+                      child: IOSButton(Text("Recuperar contraseña"), () {
+                        navigateToResetPassword();
+                      }, Color.fromARGB(255, 198, 198, 198)),
                     ),
             ],
           ),

@@ -59,7 +59,10 @@ class _FollowingViewState extends State<FollowingView> {
                   ),
                 ]),
               ]),
-              onTap: () {},
+              onTap: () {
+                Navigator.pushNamed(context, '/home',
+                    arguments: {'id': item['id']});
+              },
             ),
             Divider(
               thickness: 1,

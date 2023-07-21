@@ -20,11 +20,11 @@ class ResetPasswordView extends StatefulWidget {
 class _ResetPasswordViewState extends State<ResetPasswordView> {
   final TextEditingController _emailController = TextEditingController();
 
-  void navigateToCreateAccount(){
+  void navigateToCreateAccount() {
     Navigator.pushNamed(context, '/createAccount');
   }
 
-  void navigateToLogin(){
+  void navigateToLogin() {
     Navigator.pushNamed(context, '/login');
   }
 
@@ -66,7 +66,6 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
               Platform.isAndroid
                   ? AndroidTextField('Nombre de usuario', _emailController)
                   : IOSTextField('Nombre de usuario', _emailController),
-              
               SizedBox(
                 height: 40,
                 width: 132,
@@ -76,7 +75,7 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
                       width: 333,
                       child: AndroidButton(
                           Text("Recuperar contraseña"),
-                          (){},
+                          () {},
                           Color.fromARGB(255, 255, 140, 0),
                           Color.fromARGB(255, 0, 0, 0)))
                   : Container(
@@ -88,41 +87,36 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
                         Color.fromARGB(255, 255, 140, 0),
                       ),
                     ),
-              
-              
               Platform.isAndroid
                   ? SizedBox(
                       width: 333,
-                      child: AndroidButton(
-                          Text("Crear cuenta"),
-                          (){navigateToCreateAccount();},
-                          Color.fromARGB(255, 198, 198, 198),
+                      child: AndroidButton(Text("Crear cuenta"), () {
+                        navigateToCreateAccount();
+                      }, Color.fromARGB(255, 198, 198, 198),
                           Color.fromARGB(255, 0, 0, 0)),
                     )
                   : Container(
                       width: 333,
                       margin: EdgeInsets.only(bottom: 10),
-                      child: IOSButton(Text("Crear cuenta"), (){navigateToCreateAccount();},
-                          Color.fromARGB(255, 198, 198, 198)),
+                      child: IOSButton(Text("Crear cuenta"), () {
+                        navigateToCreateAccount();
+                      }, Color.fromARGB(255, 198, 198, 198)),
                     ),
               Platform.isAndroid
                   ? SizedBox(
                       width: 333,
-                      child: AndroidButton(
-                          Text("Ingresar al sistema"),
-                          () {navigateToLogin();},
-                          Color.fromARGB(255, 198, 198, 198),
+                      child: AndroidButton(Text("Ingresar al sistema"), () {
+                        navigateToLogin();
+                      }, Color.fromARGB(255, 198, 198, 198),
                           Color.fromARGB(255, 0, 0, 0)),
                     )
                   : Container(
                       width: 333,
                       margin: EdgeInsets.only(bottom: 10),
-                      child: IOSButton(
-                          Text("Ingresar al sistema"),
-                          () {navigateToLogin();},
-                          Color.fromARGB(255, 198, 198, 198)),
+                      child: IOSButton(Text("Ingresar al sistema"), () {
+                        navigateToLogin();
+                      }, Color.fromARGB(255, 198, 198, 198)),
                     ),
-
             ],
           ),
         ),
