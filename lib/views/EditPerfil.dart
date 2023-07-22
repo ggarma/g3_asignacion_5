@@ -23,6 +23,7 @@ class _EditProfileViewState extends State<EditProfileView> {
   final TextEditingController _repeatPasswordController =
       TextEditingController();
   final TextEditingController _idController = TextEditingController();
+  var message = '';
 
   void updateUser() async {
     if (_nameController.text != "" &&
@@ -74,16 +75,33 @@ class _EditProfileViewState extends State<EditProfileView> {
           'id': _idController.text,
           'password': _newPasswordController.text,
         };
-        var responseBody = await updateUserPassword(body);
-        if (responseBody['message'] == "Ok") {
-          Navigator.pushReplacementNamed(context, '/home',
-              arguments: {'id': _idController.text});
-        }
+        var user = FirebaseAuth.instance.currentUser;
+        user!.updatePassword(_newPasswordController.text).then((value) async {
+          var responseBody = await updateUserPassword(body);
+          if (responseBody['message'] == "Ok") {
+            setState(() {
+              message = 'Contraseña Actualizada';
+            });
+            Future.delayed(Duration(seconds: 3), () {
+              Navigator.pushReplacementNamed(context, '/home',
+                  arguments: {'id': _idController.text});
+            });
+          }
+        }).onError((error, stackTrace) {
+          print(error);
+          setState(() {
+            message = 'Error: No se pudo actualizar la contraseña';
+          });
+        });
       } else {
-        print('Las contraseñas no coinciden.');
+        setState(() {
+          message = 'Error: Las contraseñas no coinciden.';
+        });
       }
     } else {
-      print('No se pudo obtener el usuario después de iniciar sesión.');
+      setState(() {
+        message = 'No se pudo obtener el usuario después de iniciar sesión.';
+      });
     }
   }
 
@@ -114,7 +132,15 @@ class _EditProfileViewState extends State<EditProfileView> {
                                 fontSize: 20,
                               ),
                               textAlign: TextAlign.center),
-                          const SizedBox(height: 20),
+                          const SizedBox(height: 10),
+                          Text(
+                            message,
+                            style: TextStyle(
+                                color: message.contains("Error")
+                                    ? Colors.red
+                                    : Colors.green),
+                          ),
+                          const SizedBox(height: 10),
                           Platform.isAndroid
                               ? AndroidTextField(
                                   'Contraseña Antigua', oldPasswordController)

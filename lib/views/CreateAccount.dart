@@ -25,6 +25,7 @@ class _CreateAccountViewState extends State<CreateAccountView> {
       TextEditingController();
   bool obscure = true;
   bool obscure2 = true;
+  var message = '';
 
   void navigateToLogin() {
     Navigator.pushNamed(context, '/login');
@@ -77,16 +78,30 @@ class _CreateAccountViewState extends State<CreateAccountView> {
             'name': _usernameController.text
           };
           await createAccount(body);
-
-          //navegacion al login
-          Navigator.pushReplacementNamed(context, '/login');
+          setState(() {
+            message = 'Creación de cuenta exitosa.';
+          });
+          Future.delayed(Duration(seconds: 5), () {
+            setState(() {
+              message = '';
+            });
+            Navigator.pushReplacementNamed(context, '/login');
+          });
         },
       );
 
-      //Falta agregar, al crear la cuenta en Firebase, debe hacerse un post a la bd
       //Con el correo ingresado, la contraseña y el uid (el id es automatico)
       //Debe consultar a firebase si existe una persona con el mismo correo
     } else {
+      setState(() {
+        message = 'Error, no coinciden las contraseñas';
+      });
+      Future.delayed(Duration(seconds: 5), () {
+        setState(() {
+          message = '';
+        });
+      });
+
       //Ingresar como un pop up de que las contraseñas no coinciden
     }
   }
@@ -123,6 +138,15 @@ class _CreateAccountViewState extends State<CreateAccountView> {
                 ),
                 textAlign: TextAlign.center,
               ),
+              SizedBox(
+                height: 10,
+              ),
+              Text(
+                message,
+                style: TextStyle(
+                    color:
+                        message.contains("Error") ? Colors.red : Colors.green),
+              ),
               Platform.isAndroid
                   ? AndroidTextField('Nombre de usuario', _usernameController)
                   : IOSTextField('Nombre de usuario', _usernameController),
@@ -147,9 +171,9 @@ class _CreateAccountViewState extends State<CreateAccountView> {
               //--------------------------------------------------------------
               Platform.isAndroid
                   ? AndroidSecuredField('Repetir contraseña',
-                      _repeatPasswordController, onTap2, obscure)
+                      _repeatPasswordController, onTap2, obscure2)
                   : IOSSecuredField('Repetir contraseña',
-                      _repeatPasswordController, onTap2, obscure),
+                      _repeatPasswordController, onTap2, obscure2),
               SizedBox(
                 height: 10,
                 width: 132,
