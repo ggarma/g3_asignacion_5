@@ -22,14 +22,13 @@ class _FollowViewState extends State<FollowView> with TickerProviderStateMixin {
     });
   }
 
-  Future<dynamic> getData(dynamic id) async {
-    var user = await getUser(id.toString());
+  Future<dynamic> getData(dynamic id, dynamic user_name) async {
     List<dynamic> followings = await getUserFollowings(id.toString());
     List<dynamic> followers = await getUserFollowers(id.toString());
 
     setState(() {
       data = {
-        'name': user['name'],
+        'name': user_name,
         'followers': followers,
         'followings': followings
       };
@@ -40,11 +39,11 @@ class _FollowViewState extends State<FollowView> with TickerProviderStateMixin {
   void initState() {
     super.initState();
 
-    Future.delayed(Duration.zero, () {
+    Future.delayed(Duration.zero, () async {
       final Map<String, dynamic>? arguments =
           ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
       initializeController(arguments?['index']);
-      getData(arguments?['id']);
+      await getData(arguments?['id'], arguments?['user_name']);
     });
   }
 

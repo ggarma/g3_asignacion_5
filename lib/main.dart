@@ -1,7 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:g3_asignacion_5/splash_screen/SplashScreen.dart';
-import 'package:g3_asignacion_5/views/AuthPage.dart';
 import 'package:g3_asignacion_5/views/FollowView.dart';
 import 'package:g3_asignacion_5/views/HomeView.dart';
 import 'package:g3_asignacion_5/views/Login.dart';
@@ -13,6 +12,7 @@ import 'firebase_options.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
+    name: 'g5_asignacion_5',
     options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(MyApp());
@@ -38,7 +38,6 @@ class MyApp extends StatelessWidget {
       themeMode: ThemeMode.system,
       routes: {
         '/': (context) => SplashScreen(),
-        '/authPage':(context) => AuthPage(),
         '/login': (context) => LoginView(),
         '/resetPassword': (context) => ResetPasswordView(),
         '/createAccount': (context) => CreateAccountView(),

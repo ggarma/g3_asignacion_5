@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:g3_asignacion_5/api/Services.dart';
 import 'package:g3_asignacion_5/components/androidComponents/androidComponent.dart';
 import 'package:g3_asignacion_5/components/iosComponents/iosComponent.dart';
 
@@ -20,59 +21,44 @@ class _LoginViewState extends State<LoginView> {
   final TextEditingController _passwordController = TextEditingController();
   bool obscure = true;
 
-  void showErrorMessage(String message){
-    showDialog(
-      context:context,
-      builder: (context){
-        return AlertDialog(
-          backgroundColor: Color.fromARGB(255, 255, 133, 124),
-          title: Center(
-            child: Text(
-              message,
-              style: const TextStyle(color:Colors.black)),)
-        );
-      } );
-  }
-
-
-  void navigateToCreateAccount(){
+  void navigateToCreateAccount() {
     Navigator.pushNamed(context, '/createAccount');
   }
 
-  void navigateToResetPassword(){
+  void navigateToResetPassword() {
     Navigator.pushNamed(context, '/resetPassword');
   }
 
   //Método de Inicio de Sesión
   // void signUserIn() async{
   //   await FirebaseAuth.instance.signInWithEmailAndPassword(
-  //     email: _emailController.text, 
+  //     email: _emailController.text,
   //     password: _passwordController.text)
   //     .then((value) async {
 
   //     });
   // }
 
+  void signUserIn() async {
+    UserCredential userCredential = await FirebaseAuth.instance
+        .signInWithEmailAndPassword(
+            email: _emailController.text, password: _passwordController.text);
 
-  void signUserIn() async{
-    try{
-      UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: _emailController.text, 
-        password: _passwordController.text
-        );
-
-        String uid = userCredential.user!.uid;
+    if (userCredential.user != null) {
+      String uid = userCredential.user!.uid;
+      var user = await getUserValidation(uid);
+      if (user['name'] != '') {
         print("Logged in");
-        Navigator.pushReplacementNamed(context, '/home',arguments:{'id':uid});
-      
-    }on FirebaseAuthException catch (e) {
-      Navigator.pop(context);
-      showErrorMessage(e.code);
+        Navigator.pushReplacementNamed(context, '/home',
+            arguments: {'id': user['id']});
+      } else {
+        print('No se pudo obtener el usuario después de iniciar sesión.');
+      }
+    } else {
+      print('No se pudo obtener el usuario después de iniciar sesión.');
     }
-
   }
 
-  
   void onTap() {
     //FirebaseAuth.instance. [autocompletado]
     setState(() {
@@ -140,17 +126,18 @@ class _LoginViewState extends State<LoginView> {
               Platform.isAndroid
                   ? SizedBox(
                       width: 333,
-                      child: AndroidButton(
-                          Text("Iniciar sesión"),
-                          (){signUserIn();},
-                          Color.fromARGB(255, 255, 140, 0),
+                      child: AndroidButton(Text("Iniciar sesión"), () {
+                        signUserIn();
+                      }, Color.fromARGB(255, 255, 140, 0),
                           Color.fromARGB(255, 0, 0, 0)))
                   : Container(
                       width: 333,
                       margin: EdgeInsets.only(bottom: 10),
                       child: IOSButton(
                         Text("Iniciar sesión"),
-                        () {signUserIn();},
+                        () {
+                          signUserIn();
+                        },
                         Color.fromARGB(255, 255, 140, 0),
                       ),
                     ),
@@ -172,41 +159,37 @@ class _LoginViewState extends State<LoginView> {
               Platform.isAndroid
                   ? SizedBox(
                       width: 333,
-                      child: AndroidButton(
-                          Text("Crear cuenta"),
-                          (){navigateToCreateAccount();},
-                          Color.fromARGB(255, 198, 198, 198),
+                      child: AndroidButton(Text("Crear cuenta"), () {
+                        navigateToCreateAccount();
+                      }, Color.fromARGB(255, 198, 198, 198),
                           Color.fromARGB(255, 0, 0, 0)),
                     )
                   : Container(
                       width: 333,
                       margin: EdgeInsets.only(bottom: 10),
-                      child: IOSButton(Text("Crear cuenta"), (){navigateToCreateAccount();},
-                          Color.fromARGB(255, 198, 198, 198)),
+                      child: IOSButton(Text("Crear cuenta"), () {
+                        navigateToCreateAccount();
+                      }, Color.fromARGB(255, 198, 198, 198)),
                     ),
               Platform.isAndroid
                   ? SizedBox(
                       width: 333,
-                      child: AndroidButton(
-                          Text("Recuperar contraseña"),
-                          (){navigateToResetPassword();},
-                          Color.fromARGB(255, 198, 198, 198),
+                      child: AndroidButton(Text("Recuperar contraseña"), () {
+                        navigateToResetPassword();
+                      }, Color.fromARGB(255, 198, 198, 198),
                           Color.fromARGB(255, 0, 0, 0)),
                     )
                   : Container(
                       width: 333,
                       margin: EdgeInsets.only(bottom: 10),
-                      child: IOSButton(Text("Recuperar contraseña"), 
-                      (){navigateToResetPassword();},
-                          Color.fromARGB(255, 198, 198, 198)),
+                      child: IOSButton(Text("Recuperar contraseña"), () {
+                        navigateToResetPassword();
+                      }, Color.fromARGB(255, 198, 198, 198)),
                     ),
             ],
           ),
-          
         ),
-        
       ),
-
     );
   }
 }

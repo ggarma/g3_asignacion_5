@@ -1,6 +1,9 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
+import '../api/Services.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -14,7 +17,17 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Timer(Duration(seconds: 5), () {
-      Navigator.pushReplacementNamed(context, '/authPage');
+      FirebaseAuth.instance.authStateChanges().listen((event) async {
+        var uid = event?.uid;
+        print(uid);
+        if (uid != null) {
+          var user = await getUserValidation(uid);
+          Navigator.pushReplacementNamed(context, '/home',
+              arguments: {'id': user['id']});
+        } else {
+          Navigator.pushReplacementNamed(context, '/login');
+        }
+      });
     });
   }
 

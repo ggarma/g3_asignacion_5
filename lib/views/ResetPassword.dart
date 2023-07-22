@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:g3_asignacion_5/components/androidComponents/androidComponent.dart';
 import 'package:g3_asignacion_5/components/iosComponents/iosComponent.dart';
 
@@ -19,13 +20,29 @@ class ResetPasswordView extends StatefulWidget {
 //------------------------------------------------------------------------
 class _ResetPasswordViewState extends State<ResetPasswordView> {
   final TextEditingController _emailController = TextEditingController();
+  var message = '';
 
-  void navigateToCreateAccount(){
+  void navigateToCreateAccount() {
     Navigator.pushNamed(context, '/createAccount');
   }
 
-  void navigateToLogin(){
+  void navigateToLogin() {
     Navigator.pushNamed(context, '/login');
+  }
+
+  void resetPasswordButton() async{
+    await FirebaseAuth.instance.sendPasswordResetEmail(email: _emailController.text)
+    .then((value) async {
+      setState(() {
+        message = "Mensaje enviado";
+      });
+      Future.delayed(Duration(seconds: 5),(){Navigator.pushNamed(context,'/login');});
+    },)
+    .onError((error, stackTrace) { 
+      setState(() {
+        message = 'Error al enviar correo.';
+      });
+      });
   }
 
   @override
@@ -61,12 +78,16 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
                 textAlign: TextAlign.center,
               ),
               SizedBox(
-                height: 30,
+                height: 15,
               ),
+              Text(message),
+              SizedBox(
+                height: 15,
+              ),
+
               Platform.isAndroid
-                  ? AndroidTextField('Nombre de usuario', _emailController)
-                  : IOSTextField('Nombre de usuario', _emailController),
-              
+                  ? AndroidTextField('Ingresar correo', _emailController)
+                  : IOSTextField('Ingresar correo', _emailController),
               SizedBox(
                 height: 40,
                 width: 132,
@@ -76,7 +97,7 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
                       width: 333,
                       child: AndroidButton(
                           Text("Recuperar contraseña"),
-                          (){},
+                          () {resetPasswordButton();},
                           Color.fromARGB(255, 255, 140, 0),
                           Color.fromARGB(255, 0, 0, 0)))
                   : Container(
@@ -84,45 +105,40 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
                       margin: EdgeInsets.only(bottom: 10),
                       child: IOSButton(
                         Text("Recuperar contraseña"),
-                        () {},
+                        () {resetPasswordButton();},
                         Color.fromARGB(255, 255, 140, 0),
                       ),
                     ),
-              
-              
               Platform.isAndroid
                   ? SizedBox(
                       width: 333,
-                      child: AndroidButton(
-                          Text("Crear cuenta"),
-                          (){navigateToCreateAccount();},
-                          Color.fromARGB(255, 198, 198, 198),
+                      child: AndroidButton(Text("Crear cuenta"), () {
+                        navigateToCreateAccount();
+                      }, Color.fromARGB(255, 198, 198, 198),
                           Color.fromARGB(255, 0, 0, 0)),
                     )
                   : Container(
                       width: 333,
                       margin: EdgeInsets.only(bottom: 10),
-                      child: IOSButton(Text("Crear cuenta"), (){navigateToCreateAccount();},
-                          Color.fromARGB(255, 198, 198, 198)),
+                      child: IOSButton(Text("Crear cuenta"), () {
+                        navigateToCreateAccount();
+                      }, Color.fromARGB(255, 198, 198, 198)),
                     ),
               Platform.isAndroid
                   ? SizedBox(
                       width: 333,
-                      child: AndroidButton(
-                          Text("Ingresar al sistema"),
-                          () {navigateToLogin();},
-                          Color.fromARGB(255, 198, 198, 198),
+                      child: AndroidButton(Text("Ingresar al sistema"), () {
+                        navigateToLogin();
+                      }, Color.fromARGB(255, 198, 198, 198),
                           Color.fromARGB(255, 0, 0, 0)),
                     )
                   : Container(
                       width: 333,
                       margin: EdgeInsets.only(bottom: 10),
-                      child: IOSButton(
-                          Text("Ingresar al sistema"),
-                          () {navigateToLogin();},
-                          Color.fromARGB(255, 198, 198, 198)),
+                      child: IOSButton(Text("Ingresar al sistema"), () {
+                        navigateToLogin();
+                      }, Color.fromARGB(255, 198, 198, 198)),
                     ),
-
             ],
           ),
         ),
