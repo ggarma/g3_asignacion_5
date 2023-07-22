@@ -1,18 +1,20 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:g3_asignacion_5/splash_screen/SplashScreen.dart';
+import 'package:g3_asignacion_5/views/EditPerfil.dart';
 import 'package:g3_asignacion_5/views/FollowView.dart';
 import 'package:g3_asignacion_5/views/HomeView.dart';
 import 'package:g3_asignacion_5/views/Login.dart';
 import 'package:g3_asignacion_5/views/CreateAccount.dart';
 import 'package:g3_asignacion_5/views/ResetPassword.dart';
 
+
 import 'firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-    name: 'g5_asignacion_5',
+    name: 'g3_asignacion_5',
     options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(MyApp());
@@ -43,6 +45,7 @@ class MyApp extends StatelessWidget {
         '/createAccount': (context) => CreateAccountView(),
         '/home': (context) => HomeView(),
         '/follows': (context) => FollowView(),
+        '/editProfile': (context) => EditProfileView(),
       },
     );
   }

@@ -87,3 +87,29 @@ Future<dynamic> getUserFollowings(String id) async {
     throw Exception('Failed to get followings');
   }
 }
+
+Future<dynamic> updateUserData(Object body) async {
+  var response = await http.post(Platform.isAndroid
+        ? Uri.parse('http://10.0.2.2:8000/user/update')
+        : Uri.parse('http://127.0.0.1:8000/user/update'), body: body);
+  if (response.statusCode == 200) {
+    var responseBody = json.decode(response.body);
+    print(responseBody);
+    return responseBody;
+  } else {
+    throw Exception('Failed to update user');
+  }
+}
+
+Future<dynamic> updateUserPassword(Object body) async {
+  var response = await http.post(Platform.isAndroid
+        ? Uri.parse('http://10.0.2.2:8000/user/password')
+        : Uri.parse('http://127.0.0.1:8000/user/password'), body: body);
+  if(response.statusCode == 200){
+    var responseBody = json.decode(response.body);
+    print(responseBody);
+    return responseBody;
+  }else{
+    throw Exception('Failed to update password');
+  }
+}

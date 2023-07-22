@@ -8,6 +8,7 @@ CupertinoTextField IOSTextField(
   return CupertinoTextField(
     controller: controller,
     placeholder: hint,
+    cursorColor: const Color.fromARGB(255,255,140,0),
   );
 }
 
