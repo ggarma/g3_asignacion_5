@@ -37,7 +37,7 @@ ElevatedButton AndroidButton(Widget widget, Function doSomething, Color color, C
   return ElevatedButton(
     style: ButtonStyle(
       backgroundColor: MaterialStateProperty.all(color),
-      textStyle: MaterialStateProperty.all(TextStyle(color:colorTexto,fontSize:14)),
+      textStyle: MaterialStateProperty.all(TextStyle(color:colorTexto,fontSize:14,fontWeight:FontWeight.bold)),
       ),
       onPressed: () {
       doSomething();
