@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:g3_asignacion_5/components/androidComponents/androidComponent.dart';
 import 'package:g3_asignacion_5/components/iosComponents/iosComponent.dart';
@@ -41,6 +42,16 @@ class _EditProfileViewState extends State<EditProfileView> {
       }
     } else {
       print('No se pudo obtener el usuario después de iniciar sesión.');
+    }
+  }
+
+  Future<void> signOut() async {
+    try {
+      await FirebaseAuth.instance.signOut();
+      Navigator.pushReplacementNamed(context, '/login');
+    } catch (e) {
+      print('Error al cerrar sesión: $e');
+      // Aquí puedes manejar el error si ocurre algún problema al cerrar sesión.
     }
   }
 
@@ -158,6 +169,26 @@ class _EditProfileViewState extends State<EditProfileView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(
+          backgroundColor: Color(0xFFFF7F2A),
+          actions: [
+            InkWell(
+              child: Row(
+                children: [
+                  Text(
+                    "Cerrar Sesión",
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  )
+                ],
+              ),
+              onTap: () {
+                signOut();
+              },
+            )
+          ],
+        ),
         body: FutureBuilder(
             future: getData(),
             builder: (context, snapshot) {

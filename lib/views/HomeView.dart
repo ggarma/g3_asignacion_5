@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:g3_asignacion_5/api/Services.dart';
 import 'package:g3_asignacion_5/components/androidComponents/androidComponent.dart';
 import 'package:g3_asignacion_5/components/iosComponents/iosComponent.dart';
@@ -15,19 +14,8 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  Future<void> signOut() async {
-    try {
-      await FirebaseAuth.instance.signOut();
-      Navigator.pushReplacementNamed(context, '/login');
-    } catch (e) {
-      print('Error al cerrar sesión: $e');
-      // Aquí puedes manejar el error si ocurre algún problema al cerrar sesión.
-    }
-  }
-
   void navigateToEditProfile(id) {
-    Navigator.pushNamed(context, '/editProfile',
-            arguments: {'id': id});
+    Navigator.pushNamed(context, '/editProfile', arguments: {'id': id});
   }
 
   Future<dynamic> getData() async {
@@ -79,7 +67,9 @@ class _HomeViewState extends State<HomeView> {
             future: getData(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return const CircularProgressIndicator();
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
               }
               if (snapshot.hasError) {
                 return Text(snapshot.error.toString());
@@ -245,9 +235,9 @@ class _HomeViewState extends State<HomeView> {
                                       style: TextStyle(
                                           fontSize: 16, color: Colors.white),
                                       overflow: TextOverflow.ellipsis,
-                                    ),
-                                    () { navigateToEditProfile(snapshot.data['id']); },
-                                    Color(0xFFFF7F2A),
+                                    ), () {
+                                    navigateToEditProfile(snapshot.data['id']);
+                                  }, Color(0xFFFF7F2A),
                                     Color.fromARGB(255, 0, 0, 0))
                                 : IOSButton(
                                     Text(
@@ -255,9 +245,9 @@ class _HomeViewState extends State<HomeView> {
                                       style: TextStyle(
                                           fontSize: 16, color: Colors.white),
                                       overflow: TextOverflow.ellipsis,
-                                    ),
-                                    () { navigateToEditProfile(snapshot.data['id']); },
-                                    Color(0xFFFF7F2A)),
+                                    ), () {
+                                    navigateToEditProfile(snapshot.data['id']);
+                                  }, Color(0xFFFF7F2A)),
                           ),
                           Container(
                             margin: EdgeInsets.only(right: 10),
@@ -364,23 +354,6 @@ class _HomeViewState extends State<HomeView> {
                             shrinkWrap: true,
                             children: snapshot.data['posts'],
                           ),
-
-                          Platform.isAndroid
-                              ? SizedBox(
-                                  width: 333,
-                                  child: AndroidButton(Text("CERRAR SESIÓN"),
-                                      () {
-                                    signOut();
-                                  }, Color.fromARGB(255, 255, 0, 0),
-                                      Color.fromARGB(255, 0, 0, 0)),
-                                )
-                              : Container(
-                                  width: 333,
-                                  margin: EdgeInsets.only(bottom: 10),
-                                  child: IOSButton(Text("CERRAR SESIÓN"), () {
-                                    signOut();
-                                  }, Color.fromARGB(255, 255, 0, 0)),
-                                ),
                         ],
                       ),
                     ],
