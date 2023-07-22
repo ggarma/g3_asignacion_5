@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:g3_asignacion_5/api/Services.dart';
@@ -14,6 +15,8 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+  var userUid = '';
+
   void navigateToEditProfile(id) {
     Navigator.pushNamed(context, '/editProfile', arguments: {'id': id});
   }
@@ -34,6 +37,7 @@ class _HomeViewState extends State<HomeView> {
       'image_url': user['image_url'],
       'followers': followers.length,
       'followings': followings.length,
+      'uid': user['uid'],
       'posts': posts
           .map(
             (e) => Container(
@@ -47,12 +51,17 @@ class _HomeViewState extends State<HomeView> {
           )
           .toList()
     };
+    print('reponse: ${user.toString()}');
     return response;
   }
 
   @override
   void initState() {
     super.initState();
+    setState(() {
+      userUid = FirebaseAuth.instance.currentUser!.uid;
+    });
+    print(userUid);
   }
 
   @override
@@ -228,26 +237,53 @@ class _HomeViewState extends State<HomeView> {
                             margin: EdgeInsets.only(right: 10),
                             height: 40,
                             width: 130,
-                            child: Platform.isAndroid
-                                ? AndroidButton(
-                                    Text(
-                                      'Editar Perfil',
-                                      style: TextStyle(
-                                          fontSize: 16, color: Colors.white),
-                                      overflow: TextOverflow.ellipsis,
-                                    ), () {
-                                    navigateToEditProfile(snapshot.data['id']);
-                                  }, Color(0xFFFF7F2A),
-                                    Color.fromARGB(255, 0, 0, 0))
-                                : IOSButton(
-                                    Text(
-                                      'Editar Perfil',
-                                      style: TextStyle(
-                                          fontSize: 16, color: Colors.white),
-                                      overflow: TextOverflow.ellipsis,
-                                    ), () {
-                                    navigateToEditProfile(snapshot.data['id']);
-                                  }, Color(0xFFFF7F2A)),
+                            child: userUid == snapshot.data['uid']
+                                ? Platform.isAndroid
+                                    ? AndroidButton(
+                                        Text(
+                                          'Editar Perfil',
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              color: Colors.white),
+                                          overflow: TextOverflow.ellipsis,
+                                        ), () {
+                                        navigateToEditProfile(
+                                            snapshot.data['id']);
+                                      }, Color(0xFFFF7F2A),
+                                        Color.fromARGB(255, 0, 0, 0))
+                                    : IOSButton(
+                                        Text(
+                                          'Editar Perfil',
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              color: Colors.white),
+                                          overflow: TextOverflow.ellipsis,
+                                        ), () {
+                                        navigateToEditProfile(
+                                            snapshot.data['id']);
+                                      }, Color(0xFFFF7F2A))
+                                : Platform.isAndroid
+                                    ? AndroidButton(
+                                        Text(
+                                          'Saludar',
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              color: Colors.white),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                        () {},
+                                        Color(0xFFFF7F2A),
+                                        Color.fromARGB(255, 0, 0, 0))
+                                    : IOSButton(
+                                        Text(
+                                          'Saludar',
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              color: Colors.white),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                        () {},
+                                        Color(0xFFFF7F2A)),
                           ),
                           Container(
                             margin: EdgeInsets.only(right: 10),

@@ -219,9 +219,13 @@ class _EditProfileViewState extends State<EditProfileView> {
                           height: 200,
                           child: CircleAvatar(
                               backgroundImage: Image.network(
-                                      snapshot.data['image_url'],
-                                      fit: BoxFit.cover)
-                                  .image)),
+                            snapshot.data['image_url'],
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Image.asset('assets/user_default.png',
+                                  fit: BoxFit.cover);
+                            },
+                          ).image)),
                       const SizedBox(height: 20),
                       Platform.isAndroid
                           ? AndroidTextField(
