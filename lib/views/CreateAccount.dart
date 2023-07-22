@@ -1,7 +1,10 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:g3_asignacion_5/components/androidComponents/androidComponent.dart';
 import 'package:g3_asignacion_5/components/iosComponents/iosComponent.dart';
+
+import '../api/Services.dart';
 
 //FirebaseAuth.instance
 
@@ -15,6 +18,7 @@ class CreateAccountView extends StatefulWidget {
 
 //------------------------------------------------------------------------
 class _CreateAccountViewState extends State<CreateAccountView> {
+  final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _repeatPasswordController =
@@ -40,6 +44,51 @@ class _CreateAccountViewState extends State<CreateAccountView> {
     setState(() {
       obscure2 = !obscure2;
     });
+  }
+
+  Future<dynamic> getData() async {
+    final Map<String, dynamic>? arguments =
+        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
+
+    var user = await getUser(arguments!['id'].toString());
+
+    var response = {
+      'id': user['id'],
+      'name': user['name'],
+      'image_url': user['image_url']
+    };
+    return response;
+  }
+
+  void signUserUp() async {
+    //Validar si coinciden las contraseñas
+    if (_passwordController.text == _repeatPasswordController.text) {
+      await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
+              email: _emailController.text, password: _passwordController.text)
+          .then(
+        (value) async {
+          //llamada a la bd
+          var body = {
+            'email': _emailController.text,
+            'password': _passwordController.text,
+            'username': _usernameController.text,
+            'uid': value.user!.uid,
+            'name': _usernameController.text
+          };
+          await createAccount(body);
+
+          //navegacion al login
+          Navigator.pushReplacementNamed(context, '/login');
+        },
+      );
+
+      //Falta agregar, al crear la cuenta en Firebase, debe hacerse un post a la bd
+      //Con el correo ingresado, la contraseña y el uid (el id es automatico)
+      //Debe consultar a firebase si existe una persona con el mismo correo
+    } else {
+      //Ingresar como un pop up de que las contraseñas no coinciden
+    }
   }
 
   @override
@@ -75,6 +124,12 @@ class _CreateAccountViewState extends State<CreateAccountView> {
                 textAlign: TextAlign.center,
               ),
               Platform.isAndroid
+                  ? AndroidTextField('Nombre de usuario', _usernameController)
+                  : IOSTextField('Nombre de usuario', _usernameController),
+              SizedBox(
+                height: 10,
+              ),
+              Platform.isAndroid
                   ? AndroidTextField('Correo', _emailController)
                   : IOSTextField('Correo', _emailController),
               SizedBox(
@@ -103,17 +158,18 @@ class _CreateAccountViewState extends State<CreateAccountView> {
               Platform.isAndroid
                   ? SizedBox(
                       width: 333,
-                      child: AndroidButton(
-                          Text("Crear cuenta"),
-                          () {},
-                          Color.fromARGB(255, 255, 140, 0),
+                      child: AndroidButton(Text("Crear cuenta"), () {
+                        signUserUp();
+                      }, Color.fromARGB(255, 255, 140, 0),
                           Color.fromARGB(255, 0, 0, 0)))
                   : Container(
                       width: 333,
                       margin: EdgeInsets.only(bottom: 10),
                       child: IOSButton(
                         Text("Crear cuenta"),
-                        () {},
+                        () {
+                          signUserUp();
+                        },
                         Color.fromARGB(255, 255, 140, 0),
                       ),
                     ),

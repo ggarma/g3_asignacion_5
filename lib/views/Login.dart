@@ -20,6 +20,17 @@ class _LoginViewState extends State<LoginView> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool obscure = true;
+  bool _isValidEmail = true;
+  var message = '';
+
+  bool _validateEmail() {
+    // Expresión regular para validar el formato de correo electrónico.
+    final emailRegExp = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+    setState(() {
+      _isValidEmail = emailRegExp.hasMatch(_emailController.text);
+    });
+    return _isValidEmail;
+  }
 
   void navigateToCreateAccount() {
     Navigator.pushNamed(context, '/createAccount');
@@ -29,46 +40,48 @@ class _LoginViewState extends State<LoginView> {
     Navigator.pushNamed(context, '/resetPassword');
   }
 
-  //Método de Inicio de Sesión
-  // void signUserIn() async{
-  //   await FirebaseAuth.instance.signInWithEmailAndPassword(
-  //     email: _emailController.text,
-  //     password: _passwordController.text)
-  //     .then((value) async {
-
-  //     });
-  // }
-
   void signUserIn() async {
-    UserCredential userCredential = await FirebaseAuth.instance
-        .signInWithEmailAndPassword(
-            email: _emailController.text, password: _passwordController.text);
-
-    if (userCredential.user != null) {
-      String uid = userCredential.user!.uid;
-      var user = await getUserValidation(uid);
-      if (user['name'] != '') {
-        print("Logged in");
-        Navigator.pushReplacementNamed(context, '/home',
-            arguments: {'id': user['id']});
-      } else {
-        print('No se pudo obtener el usuario después de iniciar sesión.');
-      }
+    if (_validateEmail()) {
+      await FirebaseAuth.instance
+          .signInWithEmailAndPassword(
+              email: _emailController.text, password: _passwordController.text)
+          .then((value) async {
+        String uid = value.user!.uid;
+        var user = await getUserValidation(uid);
+        if (user['name'] != '') {
+          print("Logged in");
+          setState(() {
+            message = 'Inicio de sesión exitoso.';
+          });
+          Future.delayed(Duration(seconds: 3), () {
+            Navigator.pushReplacementNamed(context, '/home',
+                arguments: {'id': user['id']});
+          });
+        } else {
+          setState(() {
+            message = 'Error: No se encontró correo.';
+          });
+        }
+      }).onError((error, stackTrace) {
+        if (_passwordController.text == '') {
+          setState(() {
+            message = 'Error: Ingrese contraseña.';
+          });
+        } else {
+          setState(() {
+            message = 'Error: Cuenta no existe.';
+          });
+        }
+      });
     } else {
-      print('No se pudo obtener el usuario después de iniciar sesión.');
+      setState(() {
+        message = 'Error en formato de correo.';
+      });
     }
   }
 
   void onTap() {
-    //FirebaseAuth.instance. [autocompletado]
     setState(() {
-      //luego del .then es para que se ejecute luego
-      // .then((value) async {
-      //                 id = value.user!.uid;
-      //                 print("Logged In");
-      //                 Navigator.pushReplacementName(
-      //                     );
-      //               });
       obscure = !obscure;
     });
   }
@@ -107,6 +120,12 @@ class _LoginViewState extends State<LoginView> {
               ),
               SizedBox(
                 height: 30,
+              ),
+              Text(
+                message,
+                style: TextStyle(
+                    color:
+                        message.contains("Error") ? Colors.red : Colors.green),
               ),
               Platform.isAndroid
                   ? AndroidTextField('Correo', _emailController)

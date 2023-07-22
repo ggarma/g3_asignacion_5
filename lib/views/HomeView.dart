@@ -107,8 +107,14 @@ class _HomeViewState extends State<HomeView> {
                                               ? Colors.black
                                               : Colors.white)),
                                   child: Image.network(
-                                      snapshot.data['image_url'],
-                                      fit: BoxFit.cover),
+                                    snapshot.data['image_url'],
+                                    fit: BoxFit.cover,
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return Image.asset(
+                                          'assets/user_default.png',
+                                          fit: BoxFit.cover);
+                                    },
+                                  ),
                                   clipBehavior: Clip.hardEdge,
                                 ),
                                 Text(

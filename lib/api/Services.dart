@@ -2,6 +2,22 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+Future<dynamic> createAccount(dynamic body) async {
+  var response = await http.post(
+      Platform.isAndroid
+          ? Uri.parse('http://10.0.2.2:8000/user/create')
+          : Uri.parse('http://127.0.0.1:8000/user/create'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: json.encode(body));
+
+  if (response.statusCode == 200) {
+  } else {
+    throw Exception('Failed to get user');
+  }
+}
+
 Future<dynamic> getUserValidation(String uid) async {
   var response = await http.get(
     Platform.isAndroid

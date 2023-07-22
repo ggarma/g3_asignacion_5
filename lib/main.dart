@@ -12,7 +12,7 @@ import 'firebase_options.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-    name: 'auth-project',
+    name: 'g5_asignacion_5',
     options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(MyApp());
