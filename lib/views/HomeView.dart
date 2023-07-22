@@ -25,6 +25,11 @@ class _HomeViewState extends State<HomeView> {
     }
   }
 
+  void navigateToEditProfile(id) {
+    Navigator.pushNamed(context, '/editProfile',
+            arguments: {'id': id});
+  }
+
   Future<dynamic> getData() async {
     final Map<String, dynamic>? arguments =
         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
@@ -235,7 +240,7 @@ class _HomeViewState extends State<HomeView> {
                                           fontSize: 16, color: Colors.white),
                                       overflow: TextOverflow.ellipsis,
                                     ),
-                                    () {},
+                                    () { navigateToEditProfile(snapshot.data['id']); },
                                     Color(0xFFFF7F2A),
                                     Color.fromARGB(255, 0, 0, 0))
                                 : IOSButton(
@@ -245,7 +250,7 @@ class _HomeViewState extends State<HomeView> {
                                           fontSize: 16, color: Colors.white),
                                       overflow: TextOverflow.ellipsis,
                                     ),
-                                    () {},
+                                    () { navigateToEditProfile(snapshot.data['id']); },
                                     Color(0xFFFF7F2A)),
                           ),
                           Container(

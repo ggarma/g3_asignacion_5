@@ -39,13 +39,13 @@ class MyApp extends StatelessWidget {
       ),
       themeMode: ThemeMode.system,
       routes: {
-        '/splash': (context) => SplashScreen(),
+        '/': (context) => SplashScreen(),
         '/login': (context) => LoginView(),
         '/resetPassword': (context) => ResetPasswordView(),
         '/createAccount': (context) => CreateAccountView(),
         '/home': (context) => HomeView(),
         '/follows': (context) => FollowView(),
-        '/': (context) => EditPerfilView(),
+        '/editProfile': (context) => EditProfileView(),
       },
     );
   }
