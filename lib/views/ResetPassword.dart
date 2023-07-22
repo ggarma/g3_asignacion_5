@@ -20,6 +20,19 @@ class ResetPasswordView extends StatefulWidget {
 //------------------------------------------------------------------------
 class _ResetPasswordViewState extends State<ResetPasswordView> {
   final TextEditingController _emailController = TextEditingController();
+
+  bool _isValidEmail = true;
+
+  bool _validateEmail() {
+    // Expresión regular para validar el formato de correo electrónico.
+    final emailRegExp = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+    setState(() {
+      _isValidEmail = emailRegExp.hasMatch(_emailController.text);
+    });
+    return _isValidEmail;
+
+  }
+
   var message = '';
 
   void navigateToCreateAccount() {
@@ -31,18 +44,27 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
   }
 
   void resetPasswordButton() async{
-    await FirebaseAuth.instance.sendPasswordResetEmail(email: _emailController.text)
-    .then((value) async {
+
+    //validar formato de correo
+    if(_validateEmail()){
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: _emailController.text)
+      .then((value) async {
+        setState(() {
+          message = "Mensaje enviado";
+        });
+        Future.delayed(Duration(seconds: 3),(){Navigator.pushNamed(context,'/login');});
+      },)
+      .onError((error, stackTrace) { 
+        setState(() {
+          message = 'Error: No se encontró correo';
+        });
+        });
+    }else{
       setState(() {
-        message = "Mensaje enviado";
-      });
-      Future.delayed(Duration(seconds: 5),(){Navigator.pushNamed(context,'/login');});
-    },)
-    .onError((error, stackTrace) { 
-      setState(() {
-        message = 'Error al enviar correo.';
-      });
-      });
+          message = 'Error en formato de correo.';
+        });
+    }
+    
   }
 
   @override
@@ -80,7 +102,10 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
               SizedBox(
                 height: 15,
               ),
-              Text(message),
+
+              Text(message,
+                  style: TextStyle(color: message.contains("Error") ? Colors.red : Colors.green),),
+
               SizedBox(
                 height: 15,
               ),

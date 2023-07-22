@@ -11,7 +11,8 @@ class AuthPage extends StatelessWidget {
         stream:FirebaseAuth.instance.authStateChanges(),
         builder:(context,snapshot){
           if (snapshot.connectionState == ConnectionState.waiting) {
-            // Si el estado de conexión es "waiting", es decir, el stream está esperando la respuesta, muestra un indicador de carga o cualquier otro widget que desees.
+            // Si el estado de conexión es "waiting", es decir, el stream está esperando la respuesta, 
+            ////muestra un indicador de carga o cualquier otro widget que desees.
             return Center(
               child: CircularProgressIndicator(),
             );
